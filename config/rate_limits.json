@@ -1,0 +1,33 @@
+{
+  "default_tier": "standard",
+  "tiers": {
+    "standard": {
+      "org": { "requests": 100, "window_seconds": 60 },
+      "read": { "requests": 120, "window_seconds": 60 },
+      "write": { "requests": 20, "window_seconds": 60 }
+    },
+    "premium": {
+      "org": { "requests": 500, "window_seconds": 60 },
+      "read": { "requests": 600, "window_seconds": 60 },
+      "write": { "requests": 100, "window_seconds": 60 }
+    }
+  },
+  "orgs": {
+    "acme-standard": { "tier": "standard" },
+    "globex-premium": { "tier": "premium" },
+    "noisy-client": {
+      "tier": "standard",
+      "overrides": {
+        "org": { "requests": 10, "window_seconds": 60 },
+        "write": { "requests": 3, "window_seconds": 60 }
+      }
+    }
+  },
+  "endpoint_overrides": [
+    {
+      "method": "POST",
+      "path": "/api/sync",
+      "limit": { "requests": 5, "window_seconds": 60 }
+    }
+  ]
+}

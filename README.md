@@ -141,9 +141,3 @@ With Redis or another shared low-latency store, I would move counters out of pro
 I would also likely switch from fixed windows to token bucket, leaky bucket, or sliding-window counters depending on product needs. Token bucket is usually a good fit for APIs because it allows small bursts while preserving an average rate.
 
 Config should move to the platform's config management system or feature flag service. Limit changes should be validated before rollout, observed with metrics, and applied consistently across instances.
-
-## AI Collaboration Note
-
-For the video question, do not read this verbatim. Speak naturally from your own experience.
-
-A specific moment worth discussing from this build: the first natural design for a quick POC is often to increment the org counter, then check the endpoint counter, because that is easy to code. I rejected that because it means requests blocked by a strict endpoint limit also burn org-wide quota. Instead, this implementation checks both counters first under a lock and only commits increments when the request is allowed. That is a small design correction, but it matters because a noisy sync endpoint should not make unrelated reads fail sooner than necessary.
